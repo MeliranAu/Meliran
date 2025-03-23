@@ -7,6 +7,6 @@ router.get('/', homeController.home);
 router.get('/events', homeController.events);
 router.get('/about', homeController.about);
 router.get('/contact', homeController.contact);
-router.get('/team', homeController.team); // Add this line
+router.get('/team', homeController.team);
 
 module.exports = router;

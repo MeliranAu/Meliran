@@ -16,5 +16,5 @@ exports.contact = (req, res) => {
 };
 
 exports.team = (req, res) => {
-  res.render('team', { title: 'Team' }); // Add this function
+  res.render('team', { title: 'Team' });
 };
