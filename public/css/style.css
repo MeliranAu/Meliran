@@ -1,0 +1,12 @@
+/* filepath: e:\work\Meliran\public\css\style.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.jumbotron {
+    background-color: #f8f9fa;
+}

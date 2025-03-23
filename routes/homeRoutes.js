@@ -1,7 +1,11 @@
-const express = require("express");
+// filepath: e:\work\Meliran\routes\homeRoutes.js
+const express = require('express');
 const router = express.Router();
-const homeController = require("../controllers/homeController");
+const homeController = require('../controllers/homeController');
 
-router.get("/", homeController.getHome);
+router.get('/', homeController.home);
+router.get('/events', homeController.events);
+router.get('/about', homeController.about);
+router.get('/contact', homeController.contact);
 
 module.exports = router;
