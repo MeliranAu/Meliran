@@ -14,3 +14,7 @@ exports.about = (req, res) => {
 exports.contact = (req, res) => {
   res.render('contact', { title: 'Contact' });
 };
+
+exports.team = (req, res) => {
+  res.render('team', { title: 'Team' }); // Add this function
+};
