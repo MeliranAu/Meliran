@@ -10,3 +10,11 @@ body {
 .jumbotron {
     background-color: #f8f9fa;
 }
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-link {
+    padding: 0.5rem 1rem;
+}
