@@ -1,22 +1,18 @@
-const express = require("express");
-const dotenv = require("dotenv");
-
-dotenv.config();
-
+const express = require('express');
 const app = express();
+const port = 3000;
 
-// Middleware
-app.set("view engine", "ejs");
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true })); // Parses form data
+app.set('view engine', 'ejs');
 
-// Routes
-const homeRoutes = require("./routes/homeRoutes");
-const eventRoutes = require("./routes/eventRoutes");
+const indexRoutes = require('./routes/index');
+const eventRoutes = require('./routes/events');
+const articleRoutes = require('./routes/articles');
+app.use('/', indexRoutes);
+app.use('/events', eventRoutes);
+app.use('/articles', articleRoutes);
 
-app.use("/", homeRoutes);
-app.use("/events", eventRoutes);
-
-// Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
