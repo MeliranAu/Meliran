@@ -1,9 +1,13 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = require('./db');
-db.run("INSERT INTO articles (title, content, date) VALUES (?, ?, ?)", 
-  ["First Article", "This is a test article.", "2025-03-25"], 
-  (err) => { if (err) console.error(err); }
-);
+
+// Create the database connection
+const db = new sqlite3.Database('./meliran.db', (err) => {
+  if (err) {
+    console.error('Error connecting to SQLite:', err);
+  } else {
+    console.log('Connected to SQLite');
+  }
+});
 
 // Create tables
 db.serialize(() => {
@@ -19,7 +23,13 @@ db.serialize(() => {
     content TEXT,
     date TEXT
   )`);
+  db.run(`CREATE TABLE IF NOT EXISTS contacts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    email TEXT,
+    message TEXT,
+    date TEXT
+  )`);
 });
 
 module.exports = db;
-
