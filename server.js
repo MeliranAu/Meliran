@@ -88,7 +88,13 @@ app.get('/api/articles/:id', (req, res) => {
     res.json(article);
   });
 });
-
+app.post('/api/events', isAdmin, (req, res) => {
+  const { title, date } = req.body;
+  db.run('INSERT INTO events (title, date, rsvpCount) VALUES (?, ?, 0)', [title, date], function(err) {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    res.status(201).json({ id: this.lastID, title, date, rsvpCount: 0 });
+  });
+});
 const indexRoutes = require('./routes/index');
 const eventRoutes = require('./routes/events');
 const articleRoutes = require('./routes/articles');
