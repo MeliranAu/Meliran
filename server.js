@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const db = require('./db'); // Add this to access SQLite
 const app = express();
 const port = 3000;
 
@@ -12,9 +13,8 @@ app.use(session({
   saveUninitialized: false
 }));
 
-// Middleware to pass session to all views
 app.use((req, res, next) => {
-  res.locals.session = req.session; // Make session available in all templates
+  res.locals.session = req.session;
   next();
 });
 
@@ -37,6 +37,56 @@ app.post('/admin-login', (req, res) => {
 app.get('/logout', (req, res) => {
   req.session.destroy();
   res.redirect('/');
+});
+
+// API Routes
+app.get('/api/events', (req, res) => {
+  db.all('SELECT * FROM events', [], (err, events) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json(events);
+  });
+});
+
+app.get('/api/articles', (req, res) => {
+  db.all('SELECT * FROM articles', [], (err, articles) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json(articles);
+  });
+});
+
+// Optional: Specific event/article by ID
+app.get('/api/events/:id', (req, res) => {
+  const id = req.params.id;
+  db.get('SELECT * FROM events WHERE id = ?', [id], (err, event) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    if (!event) {
+      return res.status(404).json({ error: 'Event not found' });
+    }
+    res.json(event);
+  });
+});
+
+app.get('/api/articles/:id', (req, res) => {
+  const id = req.params.id;
+  db.get('SELECT * FROM articles WHERE id = ?', [id], (err, article) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    if (!article) {
+      return res.status(404).json({ error: 'Article not found' });
+    }
+    res.json(article);
+  });
 });
 
 const indexRoutes = require('./routes/index');
