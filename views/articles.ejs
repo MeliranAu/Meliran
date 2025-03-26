@@ -8,9 +8,14 @@
   <%- include('partials/navbar') %>
   <div class="container mt-4">
     <h1>Articles</h1>
+    <% if (session.isAdmin) { %>
+      <a href="/articles/new" class="btn btn-primary mb-3">New Article</a>
+    <% } %>
     <ul>
       <% articles.forEach(article => { %>
-        <li><%= article.title %> - <%= article.date %></li>
+        <li>
+          <a href="/articles/<%= article.id %>"><%= article.title %></a> - <%= article.date %>
+        </li>
       <% }) %>
     </ul>
   </div>
