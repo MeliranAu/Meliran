@@ -8,14 +8,21 @@
   <%- include('partials/navbar') %>
   <div class="container mt-4">
     <h1>Events</h1>
-    <ul>
-      <% events.forEach(event => { %>
-        <li>
-          <a href="/events/<%= event.id %>"><%= event.title %></a> - <%= event.date %>
-        </li>
-      <% }) %>
-    </ul>
+    <% if (session.isAdmin) { %>
+      <a href="/events/new" class="btn btn-primary mb-3">New Event</a>
+    <% } %>
+    <ul id="event-list"></ul>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    fetch('/api/events')
+      .then(res => res.json())
+      .then(events => {
+        const list = document.getElementById('event-list');
+        events.forEach(event => {
+          list.innerHTML += `<li><a href="/events/${event.id}">${event.title}</a> - ${event.date}</li>`;
+        });
+      });
+  </script>
 </body>
 </html>
