@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const db = require('./db'); // Add this to access SQLite
 const app = express();
-const port = 3000;
+const port = 3001;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
@@ -15,6 +15,11 @@ app.use(session({
 
 app.use((req, res, next) => {
   res.locals.session = req.session;
+  next();
+});
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
   next();
 });
 
