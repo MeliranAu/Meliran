@@ -97,7 +97,7 @@ function EventDetail({ eventId }) {
 function ArticleDetail({ articleId }) {
   const [article, setArticle] = useState(null);
   useEffect(() => {
-    fetch(`http://localhost:3001/api/articles/${eventId}`).then(res => res.json()).then(setArticle);
+    fetch(`http://localhost:3001/api/articles/${articleId}`).then(res => res.json()).then(setArticle);
   }, [articleId]);
   if (!article) return <p>Loading...</p>;
   return (
@@ -306,21 +306,45 @@ function NewArticle({ isAdmin }) {
   );
 }
 
-function Logout() {
+function Logout({ setIsAdmin }) {
   useEffect(() => {
-    fetch('http://localhost:3001/logout', { credentials: 'include' })
-      .then(() => window.location.href = '/');
-  }, []);
+    fetch('http://localhost:3001/logout', {
+      method: 'POST', // Match backend method
+      credentials: 'include'
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Logout failed');
+        return res.json();
+      })
+      .then(data => {
+        if (data.success) {
+          setIsAdmin(false); // Reset admin state
+          window.location.href = '/'; // Redirect to homepage
+        }
+      })
+      .catch(err => {
+        console.error('Logout error:', err);
+        // Still redirect to avoid hanging
+        setIsAdmin(false);
+        window.location.href = '/';
+      });
+  }, [setIsAdmin]);
   return <p className="container mt-4">Logging out...</p>;
 }
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
+
   useEffect(() => {
-    fetch('http://localhost:3001/api/events', { credentials: 'include' })
-      .then(res => {
-        if (res.ok) setIsAdmin(true);
-      });
+    // Check admin status on mount
+    fetch('http://localhost:3001/check-admin', {
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        setIsAdmin(data.isAdmin || false);
+      })
+      .catch(() => setIsAdmin(false));
   }, []);
 
   return (
@@ -342,7 +366,7 @@ function App() {
             <Route path="/login" element={<Login setIsAdmin={setIsAdmin} />} />
             <Route path="/events/new" element={<NewEvent isAdmin={isAdmin} />} />
             <Route path="/articles/new" element={<NewArticle isAdmin={isAdmin} />} />
-            <Route path="/logout" element={<Logout />} />
+            <Route path="/logout" element={<Logout setIsAdmin={setIsAdmin} />} />
           </Routes>
         </div>
       </div>
