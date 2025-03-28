@@ -4,32 +4,47 @@ import './App.css';
 
 function Navbar({ isAdmin }) {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/">Meliran</Link>
-      <div className="collapse navbar-collapse">
-        <ul className="navbar-nav mr-auto">
-          <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/about">About</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/article-charter">Article Charter</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/team">Meliran Team</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/occasions">Occasions</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/events">Events</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/articles">Articles</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/contact">Contact Us</Link></li>
-        </ul>
-        <ul className="navbar-nav">
-          {isAdmin ? (
-            <>
-              <li className="nav-item"><Link className="nav-link" to="/events/new">New Event</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/articles/new">New Article</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/logout">Logout</Link></li>
-            </>
-          ) : (
-            <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
-          )}
-        </ul>
-      </div>
-    </nav>
+    <header className="navbar-sticky">
+      <nav className="navbar navbar-expand-lg">
+        <div className="container">
+          <Link className="navbar-brand" to="/">Meliran</Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/about">About</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/article-charter">Article Charter</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/team">Team</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/occasions">Occasions</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/events">Events</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/articles">Articles</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/contact">Contact Us</Link></li>
+            </ul>
+            <ul className="navbar-nav mb-2 mb-lg-0">
+              {isAdmin ? (
+                <>
+                  <li className="nav-item"><Link className="nav-link" to="/events/new">New Event</Link></li>
+                  <li className="nav-item"><Link className="nav-link" to="/articles/new">New Article</Link></li>
+                  <li className="nav-item"><Link className="nav-link" to="/logout">Logout</Link></li>
+                </>
+              ) : (
+                <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
   );
 }
 
@@ -98,8 +113,12 @@ function ArticleDetail({ articleId }) {
 function About() {
   return (
     <div className="container mt-4">
-      <h1>About</h1>
-      <p>This is the About page for Meliran.</p>
+      <h1>About Meliran</h1>
+      <p>
+        Meliran is a Melbourne-based Iranian community group aimed at bringing Iranians together through hosting events and gatherings. 
+        We aim to connect Persians in Melbourne and create a friendly community through events such as live Persian music, Persian 
+        dance classes, Persian book club, and much more.
+      </p>
     </div>
   );
 }
@@ -108,7 +127,7 @@ function ArticleCharter() {
   return (
     <div className="container mt-4">
       <h1>Article Charter</h1>
-      <p>Guidelines and principles for Meliran articles.</p>
+      <p>Guidelines and principles for Meliran articles (to be defined).</p>
     </div>
   );
 }
@@ -117,7 +136,16 @@ function Team() {
   return (
     <div className="container mt-4">
       <h1>Meliran Team</h1>
-      <p>Meet the Meliran Team!</p>
+      <p>
+        Our team consists of passionate volunteers dedicated to fostering a vibrant Persian community in Melbourne:
+      </p>
+      <ul className="list-group mb-4">
+        <li className="list-group-item"><strong>Pegah:</strong> Chief organiser and founder of Meliran.</li>
+        <li className="list-group-item"><strong>Maryam:</strong> Runs weekly dance classes and assists with event planning.</li>
+        <li className="list-group-item"><strong>Mahsa:</strong> Manages social media and communications.</li>
+        <li className="list-group-item"><strong>Mohammad:</strong> Helps organise live music events.</li>
+      </ul>
+      <p>Want to join us? Contact Pegah at meliran.com@gmail.com!</p>
     </div>
   );
 }
@@ -126,7 +154,15 @@ function Occasions() {
   return (
     <div className="container mt-4">
       <h1>Occasions</h1>
-      <p>Special occasions celebrated by Meliran.</p>
+      <p>
+        Meliran celebrates key Persian cultural occasions, including:
+      </p>
+      <ul className="list-group mb-4">
+        <li className="list-group-item"><strong>Nowruz:</strong> Persian New Year celebrations with music, dance, and food.</li>
+        <li className="list-group-item"><strong>Mehregan:</strong> Autumn festival with cultural performances.</li>
+        <li className="list-group-item"><strong>Yalda Night:</strong> Winter solstice event with poetry and storytelling.</li>
+      </ul>
+      <p>Check our Events page for upcoming celebrations!</p>
     </div>
   );
 }
@@ -157,6 +193,7 @@ function Contact() {
   return (
     <div className="container mt-4">
       <h1>Contact Us</h1>
+      <p>Email Pegah at <a href="mailto:meliran.com@gmail.com">meliran.com@gmail.com</a> or use the form below:</p>
       {success && <p className="alert alert-success">Message sent!</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -263,49 +300,75 @@ function NewArticle({ isAdmin }) {
         <div className="mb-3">
           <textarea className="form-control" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content" required />
         </div>
-        <button type="submit" class="btn btn-primary">Publish</button>
+        <button type="submit" className="btn btn-primary">Publish</button>
       </form>
     </div>
   );
 }
 
-function Logout() {
+function Logout({ setIsAdmin }) {
   useEffect(() => {
-    fetch('http://localhost:3001/logout', { credentials: 'include' })
-      .then(() => window.location.href = '/');
-  }, []);
+    fetch('http://localhost:3001/logout', {
+      method: 'POST', // Match backend method
+      credentials: 'include'
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Logout failed');
+        return res.json();
+      })
+      .then(data => {
+        if (data.success) {
+          setIsAdmin(false); // Reset admin state
+          window.location.href = '/'; // Redirect to homepage
+        }
+      })
+      .catch(err => {
+        console.error('Logout error:', err);
+        // Still redirect to avoid hanging
+        setIsAdmin(false);
+        window.location.href = '/';
+      });
+  }, [setIsAdmin]);
   return <p className="container mt-4">Logging out...</p>;
 }
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
+
   useEffect(() => {
-    fetch('http://localhost:3001/api/events', { credentials: 'include' })
-      .then(res => {
-        if (res.ok) setIsAdmin(true); // Rough check; refine later
-      });
+    // Check admin status on mount
+    fetch('http://localhost:3001/check-admin', {
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        setIsAdmin(data.isAdmin || false);
+      })
+      .catch(() => setIsAdmin(false));
   }, []);
 
   return (
     <Router>
       <div className="App">
         <Navbar isAdmin={isAdmin} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/events" element={<Home />} /> {/* Reuse Home for now */}
-          <Route path="/articles" element={<Home />} /> {/* Reuse Home for now */}
-          <Route path="/events/:eventId" element={<EventDetail eventId={useParams().eventId} />} />
-          <Route path="/articles/:articleId" element={<ArticleDetail articleId={useParams().articleId} />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/article-charter" element={<ArticleCharter />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/occasions" element={<Occasions />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login setIsAdmin={setIsAdmin} />} />
-          <Route path="/events/new" element={<NewEvent isAdmin={isAdmin} />} />
-          <Route path="/articles/new" element={<NewArticle isAdmin={isAdmin} />} />
-          <Route path="/logout" element={<Logout />} />
-        </Routes>
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/events" element={<Home />} />
+            <Route path="/articles" element={<Home />} />
+            <Route path="/events/:eventId" element={<EventDetail eventId={useParams().eventId} />} />
+            <Route path="/articles/:articleId" element={<ArticleDetail articleId={useParams().articleId} />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/article-charter" element={<ArticleCharter />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/occasions" element={<Occasions />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login setIsAdmin={setIsAdmin} />} />
+            <Route path="/events/new" element={<NewEvent isAdmin={isAdmin} />} />
+            <Route path="/articles/new" element={<NewArticle isAdmin={isAdmin} />} />
+            <Route path="/logout" element={<Logout setIsAdmin={setIsAdmin} />} />
+          </Routes>
+        </div>
       </div>
     </Router>
   );

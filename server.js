@@ -11,7 +11,8 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(session({
   secret: 'meliran-secret',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: { secure: false } // Set to true if using HTTPS
 }));
 
 const adminPassword = 'meliran123';
@@ -29,9 +30,15 @@ app.post('/admin-login', (req, res) => {
   }
 });
 
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.json({ success: true });
+app.get('/check-admin', (req, res) => {
+  res.json({ isAdmin: !!req.session.isAdmin });
+});
+
+app.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) return res.status(500).json({ error: 'Logout failed' });
+    res.json({ success: true });
+  });
 });
 
 app.post('/contact', (req, res) => {
