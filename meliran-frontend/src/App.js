@@ -3,43 +3,48 @@ import { BrowserRouter as Router, Route, Routes, Link, useParams, Navigate } fro
 import './App.css';
 
 function Navbar({ isAdmin }) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   return (
-    <nav className="navbar navbar-sticky">
-      <div className="navbar-container">
-        {/* Hamburger Menu for Mobile */}
-        <div className="navbar-hamburger" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
+    <header className="navbar-sticky">
+      <nav className="navbar navbar-expand-lg">
+        <div className="container">
+          <Link className="navbar-brand" to="/">Meliran</Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/about">About</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/article-charter">Article Charter</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/team">Team</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/occasions">Occasions</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/events">Events</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/articles">Articles</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/contact">Contact Us</Link></li>
+            </ul>
+            <ul className="navbar-nav mb-2 mb-lg-0">
+              {isAdmin ? (
+                <>
+                  <li className="nav-item"><Link className="nav-link" to="/events/new">New Event</Link></li>
+                  <li className="nav-item"><Link className="nav-link" to="/articles/new">New Article</Link></li>
+                  <li className="nav-item"><Link className="nav-link" to="/logout">Logout</Link></li>
+                </>
+              ) : (
+                <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
+              )}
+            </ul>
+          </div>
         </div>
-
-        {/* Logo Centered */}
-        <Link className="navbar-brand" to="/">Meliran</Link>
-
-        {/* Navigation Links */}
-        <ul className={`navbar-nav ${isMobileMenuOpen ? 'open' : ''}`}>
-          <li className="nav-item"><Link className="nav-link" to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/article-charter" onClick={() => setIsMobileMenuOpen(false)}>Article Charter</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/team" onClick={() => setIsMobileMenuOpen(false)}>Team</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/occasions" onClick={() => setIsMobileMenuOpen(false)}>Occasions</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/events" onClick={() => setIsMobileMenuOpen(false)}>Events</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/articles" onClick={() => setIsMobileMenuOpen(false)}>Articles</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link></li>
-          {isAdmin ? (
-            <>
-              <li className="nav-item"><Link className="nav-link" to="/events/new" onClick={() => setIsMobileMenuOpen(false)}>New Event</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/articles/new" onClick={() => setIsMobileMenuOpen(false)}>New Article</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/logout" onClick={() => setIsMobileMenuOpen(false)}>Logout</Link></li>
-            </>
-          ) : (
-            <li className="nav-item"><Link className="nav-link" to="/login" onClick={() => setIsMobileMenuOpen(false)}>Login</Link></li>
-          )}
-        </ul>
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
 }
 
@@ -92,7 +97,7 @@ function EventDetail({ eventId }) {
 function ArticleDetail({ articleId }) {
   const [article, setArticle] = useState(null);
   useEffect(() => {
-    fetch(`http://localhost:3001/api/articles/${articleId}`).then(res => res.json()).then(setArticle);
+    fetch(`http://localhost:3001/api/articles/${eventId}`).then(res => res.json()).then(setArticle);
   }, [articleId]);
   if (!article) return <p>Loading...</p>;
   return (
@@ -314,7 +319,7 @@ function App() {
   useEffect(() => {
     fetch('http://localhost:3001/api/events', { credentials: 'include' })
       .then(res => {
-        if (res.ok) setIsAdmin(true); // Rough admin check
+        if (res.ok) setIsAdmin(true);
       });
   }, []);
 
