@@ -5,60 +5,54 @@ const db = require('./db');
 const app = express();
 const port = 3001;
 
-app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // Added for POST JSON bodies
+app.use(express.json());
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
-app.set('view engine', 'ejs');
 app.use(session({
   secret: 'meliran-secret',
   resave: false,
   saveUninitialized: false
 }));
 
-app.use((req, res, next) => {
-  res.locals.session = req.session;
-  next();
-});
-
 const adminPassword = 'meliran123';
 function isAdmin(req, res, next) {
   if (req.session.isAdmin) return next();
-  res.redirect('/admin-login');
+  res.status(401).json({ error: 'Unauthorized' });
 }
 
-app.get('/admin-login', (req, res) => res.render('admin-login', { error: false }));
 app.post('/admin-login', (req, res) => {
   if (req.body.password === adminPassword) {
     req.session.isAdmin = true;
-    res.redirect('/events/new');
+    res.json({ success: true });
   } else {
-    res.render('admin-login', { error: true });
+    res.status(401).json({ error: 'Invalid password' });
   }
 });
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
-  res.redirect('/');
+  res.json({ success: true });
 });
 
-// API Routes
+app.post('/contact', (req, res) => {
+  const { name, email, message } = req.body;
+  const date = new Date().toISOString().split('T')[0];
+  db.run('INSERT INTO contacts (name, email, message, date) VALUES (?, ?, ?, ?)', [name, email, message, date], (err) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    res.json({ success: true });
+  });
+});
+
 app.get('/api/events', (req, res) => {
   db.all('SELECT * FROM events', [], (err, events) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Database error' });
-    }
+    if (err) return res.status(500).json({ error: 'Database error' });
     res.json(events);
   });
 });
 
 app.get('/api/articles', (req, res) => {
   db.all('SELECT * FROM articles', [], (err, articles) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Database error' });
-    }
+    if (err) return res.status(500).json({ error: 'Database error' });
     res.json(articles);
   });
 });
@@ -96,13 +90,6 @@ app.post('/api/articles', isAdmin, (req, res) => {
     res.status(201).json({ id: this.lastID, title, content, date });
   });
 });
-
-const indexRoutes = require('./routes/index');
-const eventRoutes = require('./routes/events');
-const articleRoutes = require('./routes/articles');
-app.use('/', indexRoutes);
-app.use('/events', eventRoutes);
-app.use('/articles', articleRoutes);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
