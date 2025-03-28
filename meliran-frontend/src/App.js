@@ -3,29 +3,39 @@ import { BrowserRouter as Router, Route, Routes, Link, useParams, Navigate } fro
 import './App.css';
 
 function Navbar({ isAdmin }) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/">Meliran</Link>
-      <div className="collapse navbar-collapse">
-        <ul className="navbar-nav mr-auto">
-          <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/about">About</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/article-charter">Article Charter</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/team">Meliran Team</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/occasions">Occasions</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/events">Events</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/articles">Articles</Link></li>
-          <li className="nav-item"><Link className="nav-link" to="/contact">Contact Us</Link></li>
-        </ul>
-        <ul className="navbar-nav">
+    <nav className="navbar navbar-sticky">
+      <div className="navbar-container">
+        {/* Hamburger Menu for Mobile */}
+        <div className="navbar-hamburger" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <span className="bar"></span>
+          <span className="bar"></span>
+          <span className="bar"></span>
+        </div>
+
+        {/* Logo Centered */}
+        <Link className="navbar-brand" to="/">Meliran</Link>
+
+        {/* Navigation Links */}
+        <ul className={`navbar-nav ${isMobileMenuOpen ? 'open' : ''}`}>
+          <li className="nav-item"><Link className="nav-link" to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/about" onClick={() => setIsMobileMenuOpen(false)}>About</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/article-charter" onClick={() => setIsMobileMenuOpen(false)}>Article Charter</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/team" onClick={() => setIsMobileMenuOpen(false)}>Team</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/occasions" onClick={() => setIsMobileMenuOpen(false)}>Occasions</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/events" onClick={() => setIsMobileMenuOpen(false)}>Events</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/articles" onClick={() => setIsMobileMenuOpen(false)}>Articles</Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link></li>
           {isAdmin ? (
             <>
-              <li className="nav-item"><Link className="nav-link" to="/events/new">New Event</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/articles/new">New Article</Link></li>
-              <li className="nav-item"><Link className="nav-link" to="/logout">Logout</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/events/new" onClick={() => setIsMobileMenuOpen(false)}>New Event</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/articles/new" onClick={() => setIsMobileMenuOpen(false)}>New Article</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/logout" onClick={() => setIsMobileMenuOpen(false)}>Logout</Link></li>
             </>
           ) : (
-            <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/login" onClick={() => setIsMobileMenuOpen(false)}>Login</Link></li>
           )}
         </ul>
       </div>
@@ -98,8 +108,12 @@ function ArticleDetail({ articleId }) {
 function About() {
   return (
     <div className="container mt-4">
-      <h1>About</h1>
-      <p>This is the About page for Meliran.</p>
+      <h1>About Meliran</h1>
+      <p>
+        Meliran is a Melbourne-based Iranian community group aimed at bringing Iranians together through hosting events and gatherings. 
+        We aim to connect Persians in Melbourne and create a friendly community through events such as live Persian music, Persian 
+        dance classes, Persian book club, and much more.
+      </p>
     </div>
   );
 }
@@ -108,7 +122,7 @@ function ArticleCharter() {
   return (
     <div className="container mt-4">
       <h1>Article Charter</h1>
-      <p>Guidelines and principles for Meliran articles.</p>
+      <p>Guidelines and principles for Meliran articles (to be defined).</p>
     </div>
   );
 }
@@ -117,7 +131,16 @@ function Team() {
   return (
     <div className="container mt-4">
       <h1>Meliran Team</h1>
-      <p>Meet the Meliran Team!</p>
+      <p>
+        Our team consists of passionate volunteers dedicated to fostering a vibrant Persian community in Melbourne:
+      </p>
+      <ul className="list-group mb-4">
+        <li className="list-group-item"><strong>Pegah:</strong> Chief organiser and founder of Meliran.</li>
+        <li className="list-group-item"><strong>Maryam:</strong> Runs weekly dance classes and assists with event planning.</li>
+        <li className="list-group-item"><strong>Mahsa:</strong> Manages social media and communications.</li>
+        <li className="list-group-item"><strong>Mohammad:</strong> Helps organise live music events.</li>
+      </ul>
+      <p>Want to join us? Contact Pegah at meliran.com@gmail.com!</p>
     </div>
   );
 }
@@ -126,7 +149,15 @@ function Occasions() {
   return (
     <div className="container mt-4">
       <h1>Occasions</h1>
-      <p>Special occasions celebrated by Meliran.</p>
+      <p>
+        Meliran celebrates key Persian cultural occasions, including:
+      </p>
+      <ul className="list-group mb-4">
+        <li className="list-group-item"><strong>Nowruz:</strong> Persian New Year celebrations with music, dance, and food.</li>
+        <li className="list-group-item"><strong>Mehregan:</strong> Autumn festival with cultural performances.</li>
+        <li className="list-group-item"><strong>Yalda Night:</strong> Winter solstice event with poetry and storytelling.</li>
+      </ul>
+      <p>Check our Events page for upcoming celebrations!</p>
     </div>
   );
 }
@@ -157,6 +188,7 @@ function Contact() {
   return (
     <div className="container mt-4">
       <h1>Contact Us</h1>
+      <p>Email Pegah at <a href="mailto:meliran.com@gmail.com">meliran.com@gmail.com</a> or use the form below:</p>
       {success && <p className="alert alert-success">Message sent!</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -263,7 +295,7 @@ function NewArticle({ isAdmin }) {
         <div className="mb-3">
           <textarea className="form-control" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content" required />
         </div>
-        <button type="submit" class="btn btn-primary">Publish</button>
+        <button type="submit" className="btn btn-primary">Publish</button>
       </form>
     </div>
   );
@@ -282,7 +314,7 @@ function App() {
   useEffect(() => {
     fetch('http://localhost:3001/api/events', { credentials: 'include' })
       .then(res => {
-        if (res.ok) setIsAdmin(true); // Rough check; refine later
+        if (res.ok) setIsAdmin(true); // Rough admin check
       });
   }, []);
 
@@ -290,22 +322,24 @@ function App() {
     <Router>
       <div className="App">
         <Navbar isAdmin={isAdmin} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/events" element={<Home />} /> {/* Reuse Home for now */}
-          <Route path="/articles" element={<Home />} /> {/* Reuse Home for now */}
-          <Route path="/events/:eventId" element={<EventDetail eventId={useParams().eventId} />} />
-          <Route path="/articles/:articleId" element={<ArticleDetail articleId={useParams().articleId} />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/article-charter" element={<ArticleCharter />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/occasions" element={<Occasions />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login setIsAdmin={setIsAdmin} />} />
-          <Route path="/events/new" element={<NewEvent isAdmin={isAdmin} />} />
-          <Route path="/articles/new" element={<NewArticle isAdmin={isAdmin} />} />
-          <Route path="/logout" element={<Logout />} />
-        </Routes>
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/events" element={<Home />} />
+            <Route path="/articles" element={<Home />} />
+            <Route path="/events/:eventId" element={<EventDetail eventId={useParams().eventId} />} />
+            <Route path="/articles/:articleId" element={<ArticleDetail articleId={useParams().articleId} />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/article-charter" element={<ArticleCharter />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/occasions" element={<Occasions />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login setIsAdmin={setIsAdmin} />} />
+            <Route path="/events/new" element={<NewEvent isAdmin={isAdmin} />} />
+            <Route path="/articles/new" element={<NewArticle isAdmin={isAdmin} />} />
+            <Route path="/logout" element={<Logout />} />
+          </Routes>
+        </div>
       </div>
     </Router>
   );
